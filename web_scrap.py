@@ -1,31 +1,42 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+
 from bs4 import BeautifulSoup
+import pandas as pd
+import time
+import requests
+import json
+from datetime import datetime
 
-def get_all_links(url):
-    print(f"Getting website: {url}")
-    response = requests.get(url)
-    if response.status_code==200:
-        print("website responded successfully")
-    else:
-        print("website didnt respond quickly")
-        return None
-    soup = BeautifulSoup(response.content,'html.parser')
-    link_tags = soup.find_all('a')
-    links=[]
-    for link_tag in link_tags:
-        href = link_tag.get('href')
+class HeavyWebsiteScraper:
+    def __init__(self, headless=False,wait_time=10):
+        print("starting the web scraper robot")
+        self.wait_time = wait_time
+        self.setup_browser(headless)
+        self.scarped_data=[]
+    def setup_browser(self,headless):
+        print("settin gup chrome browser")
+        chrome_options = Options()
+        if headless:
+            chrome_options.add_argument("--headless")
+            print("running invisible mode")
+        else:
+            print("running on visible mode")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        chrome_options.add_experimental_option("excludeSwitches",["enable-automation"])
+        chrome_options.add_experimental_option("'useAutomationExtension', False")
+        chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
-        text = link_tag.text.strip()
-        href_text = href.replace('//', '')
-        if href and text:
-            links.append({
-                'text':text,
-                'url':href_text
-            })
-    return links
-website_url = "https://www.wikipedia.org"
-all_links = get_all_links(website_url)
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service,options=chrome_options)
 
-print("First 5 links found:")
-for i, link in enumerate(all_links[:5]):
-    print(f"{i+1}. {link['text']} -> {link['url']}")
+        self.driver.execute
