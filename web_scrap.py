@@ -75,3 +75,26 @@ class HeavyWebsiteScraper:
             self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             print(f"Scroll {i+1} completed")
             time.sleep(scroll_pause)
+    
+    def infinite_scroll(self,max_scroll=10):
+        print("🔄 Starting infinite scroll...")
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        scrolls=0
+
+        while scrolls < max_scroll:
+            self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+            time.sleep(3)
+            new_height = self.driver.execute_script("return document.script.scrollHeight")
+            if new_height == last_height:
+                print("no more content to load ")
+                break
+            if new_height == last_height:
+                print("No more content to load!")
+                break
+                
+            last_height = new_height
+            scrolls += 1
+            print(f"Infinite scroll {scrolls}")
+        
+        print(f"Infinite scrolling done! Did {scrolls} scrolls")
