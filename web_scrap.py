@@ -98,3 +98,24 @@ class HeavyWebsiteScraper:
             print(f"Infinite scroll {scrolls}")
         
         print(f"Infinite scrolling done! Did {scrolls} scrolls")
+    
+    def click_element(self,css_selector):
+        try:
+            element = self.wait_for_elements(css_selector)
+            if element:
+                self.driver.execute_script("arguments[0].scrollIntoView(true);",element)
+                element.click()
+                self.human_delay(1, 2)
+
+                element.click()
+                print(f"clicked: {css_selector}")
+                self.human_delay(1,3)
+                return True
+            else:
+                print(f"Could not find element to click: {css_selector}")
+                return False
+        except Exception as e:
+            print(f"Error clicking {css_selector}: {e}")
+            return False
+    
+    
