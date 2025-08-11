@@ -120,7 +120,7 @@ class HeavyWebsiteScraper:
     
     def type_text(self,css_selectors,text):
         try:
-            element = self.wait_for_elements(css_selector)
+            element = self.wait_for_elements(css_selectors)
             if element:
                 element.clear()
                 element.send_keys(text)
