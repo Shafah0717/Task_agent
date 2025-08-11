@@ -118,4 +118,15 @@ class HeavyWebsiteScraper:
             print(f"Error clicking {css_selector}: {e}")
             return False
     
-    
+    def type_text(self,css_selectors,text):
+        try:
+            element = self.wait_for_elements(css_selector)
+            if element:
+                element.clear()
+                element.send_keys(text)
+                print(f"typed '{text}' into {css_selectors}")
+                self.human_delay(1,2)
+                return True
+        except Exception as e:
+            print(f"error for typing into {css_selectors}: {e}")
+            return False
