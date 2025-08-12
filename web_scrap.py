@@ -130,3 +130,32 @@ class HeavyWebsiteScraper:
         except Exception as e:
             print(f"error for typing into {css_selectors}: {e}")
             return False
+    def extract_data(self, selectors_dict):
+        print("🔍 Extracting data from current page...")
+        
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        data = {}
+        
+        for field_name, css_selector in selectors_dict.items():
+            try:
+                elements = soup.select(css_selector)
+                
+                if not elements:
+                    data[field_name] = "NOT FOUND"
+                elif len(elements) == 1:
+                    data[field_name] = elements[0].get_text(strip=True)
+                else:
+                    data[field_name] = [elem.get_text(strip=True) for elem in elements]
+                
+                print(f"   ✅ {field_name}: Found {len(elements) if elements else 0} items")
+                
+            except Exception as e:
+                print(f"   ❌ Error extracting {field_name}: {e}")
+                data[field_name] = "ERROR"
+        
+        data['url'] = self.driver.current_url
+        data['scraped_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        return data
