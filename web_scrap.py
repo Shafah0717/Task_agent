@@ -159,3 +159,39 @@ class HeavyWebsiteScraper:
         data['scraped_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
         return data
+    
+    def handle_popups(self,popup_close_selectors):
+        print("checing for pop up")
+        for selector in popup_close_selectors:
+            try:
+                close_button = self.driver.find_element(By.CSS_SELECTOR, selector)
+                if close_button.is_displayed():
+                    close_button.click()
+                    print(f"  Closed popup using: {selector}")
+                    self.human_delay(1, 2)
+                    break
+            except:
+                continue
+        print(" Popup check complete")
+
+    def scrape_multiple_pages(self, urls,selectors , action_per_page=None):
+        all_data=[]
+        for i,url in enumerate(urls,1):
+            print(f"\nSCRAPING PAGE {i}/{len(urls)}")
+            print("=" * 50)
+            self.go_to_page(url)
+
+            if action_per_page:
+                for action in action_per_page:
+                    try:
+                        action(self)
+                    except Exception as e:
+                        print(f"action failed {e}")
+            data = self.extract_data(selectors)
+            all_data.append(data)
+
+            print(f"page {i} complete")
+
+            if i <len(urls):
+                self.human_delay(2,5)
+        return all_data
