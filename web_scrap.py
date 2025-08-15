@@ -195,3 +195,24 @@ class HeavyWebsiteScraper:
             if i <len(urls):
                 self.human_delay(2,5)
         return all_data
+    
+    def save_data(self, data, filename=None):
+
+        if not data:
+            print(" No data to save!")
+            return
+        
+        if filename is None:
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"scraped_data_{timestamp}"
+        
+        
+        df = pd.json_normalize(data)  
+        csv_file = f"{filename}.csv"
+        df.to_csv(csv_file, index=False, encoding='utf-8')
+        print(f" Saved {len(data)} records to {csv_file}")
+
+        json_file = f"{filename}.json"
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f" Also saved to {json_file}")
