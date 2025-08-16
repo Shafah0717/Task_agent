@@ -216,3 +216,8 @@ class HeavyWebsiteScraper:
         with open(json_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         print(f" Also saved to {json_file}")
+
+    def close_browser(self):
+        print("🔒 Closing browser...")
+        self.driver.quit()
+        print("✅ Browser closed!")
