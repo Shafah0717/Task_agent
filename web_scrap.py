@@ -218,6 +218,6 @@ class HeavyWebsiteScraper:
         print(f" Also saved to {json_file}")
 
     def close_browser(self):
-        print("🔒 Closing browser...")
+        print(" Closing browser...")
         self.driver.quit()
-        print("✅ Browser closed!")
+        print(" Browser closed!")
