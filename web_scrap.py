@@ -220,4 +220,7 @@ class HeavyWebsiteScraper:
     def close_browser(self):
         print(" Closing browser...")
         self.driver.quit()
-        print(" Browser closed!")
+        print("  Browser closed!")
+    
+    def scrape_example_heavy_website():
+        
