@@ -223,4 +223,4 @@ class HeavyWebsiteScraper:
         print("  Browser closed!")
     
     def scrape_example_heavy_website():
-        
+        scraper = HeavyWebsiteScraper(headless=False, wait_time=10)
