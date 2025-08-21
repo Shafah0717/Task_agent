@@ -225,6 +225,4 @@ class HeavyWebsiteScraper:
     def scrape_example_heavy_website():
         scraper = HeavyWebsiteScraper(headless=False, wait_time=10)
         try:
-        # 1️⃣ Go to the website
-        url = "https://quotes.toscrape.com/js/"  
-        scraper.go_to_page(url)
+        
